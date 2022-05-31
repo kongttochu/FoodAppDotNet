@@ -7,9 +7,9 @@ namespace FoodAppDotNet.Models
 {
     public class DataFromDB
     {
-        public List<FOOD_COUNTRY> GetCountryAll()
+        public List<FOOD_COUNTRY_LOCAL> GetCountryAll()
         {
-            List<FOOD_COUNTRY> list = new List<FOOD_COUNTRY>();
+            List<FOOD_COUNTRY_LOCAL> list = new List<FOOD_COUNTRY_LOCAL>();
             dbconn dbconn = new dbconn();
             string queryString = string.Format("EXEC USP_GETCOUNTRYAll");
             var data = dbconn.ConnectDB(queryString);
@@ -17,7 +17,7 @@ namespace FoodAppDotNet.Models
             DateTime dt = DateTime.Now;
             while (data.Read())
             {
-                list.Add(new FOOD_COUNTRY
+                list.Add(new FOOD_COUNTRY_LOCAL
                 {
                     IDX = (int)data["IDX"],
                     COUNTRY_KOR_NAME = data["COUNTRY_KOR_NAME"].ToString(),
@@ -31,9 +31,9 @@ namespace FoodAppDotNet.Models
             return list;
         }
 
-        public List<STORE> GetStoreList(int countryId)
+        public List<FOOD_STORE_LOCAL> GetStoreList(int countryId)
         {
-            List<STORE> list = new List<STORE>();
+            List<FOOD_STORE_LOCAL> list = new List<FOOD_STORE_LOCAL>();
             dbconn dbconn = new dbconn();
             string queryString = string.Format("EXEC USP_GETSTORE {0}, {1}", countryId, 0);
             var data = dbconn.ConnectDB(queryString);
@@ -41,7 +41,7 @@ namespace FoodAppDotNet.Models
             DateTime dt = DateTime.Now;
             while (data.Read())
             {
-                list.Add(new STORE
+                list.Add(new FOOD_STORE_LOCAL
                 {
                     IDX = (int)data["IDX"],
                     STORE_KOR_NAME = data["STORE_KOR_NAME"].ToString(),
@@ -59,9 +59,9 @@ namespace FoodAppDotNet.Models
             return list;
         }
 
-        public STORE GetStore(int countryId, int storeId)
+        public FOOD_STORE_LOCAL GetStore(int countryId, int storeId)
         {
-            STORE store = new STORE();
+            FOOD_STORE_LOCAL store = new FOOD_STORE_LOCAL();
 
             dbconn dbconn = new dbconn();
             string queryString = string.Format("EXEC USP_GETSTORE {0}, {1}", countryId, storeId);
@@ -86,9 +86,9 @@ namespace FoodAppDotNet.Models
             return store;
         }
 
-        public List<FOOD_DETAIL> GetFoodDetail(int storeId)
+        public List<FOOD_DETAIL_LOCAL> GetFoodDetail(int storeId)
         {
-            List<FOOD_DETAIL> list = new List<FOOD_DETAIL>();
+            List<FOOD_DETAIL_LOCAL> list = new List<FOOD_DETAIL_LOCAL>();
             dbconn dbconn = new dbconn();
             string queryString = string.Format("EXEC USP_GETFOODDETAIL {0}", storeId);
             var data = dbconn.ConnectDB(queryString);
@@ -96,7 +96,7 @@ namespace FoodAppDotNet.Models
             DateTime dt = DateTime.Now;
             while (data.Read())
             {
-                list.Add(new FOOD_DETAIL
+                list.Add(new FOOD_DETAIL_LOCAL
                 {
                     IDX = (int)data["IDX"],
                     STORE_IDX = (int)data["STORE_IDX"],
@@ -113,14 +113,14 @@ namespace FoodAppDotNet.Models
             return list;
         }
 
-        public STORE GetStoreJoin(int storeId)
+        public FOOD_STORE_LOCAL GetStoreJoin(int storeId)
         {
             dbconn dbconn = new dbconn();
             string queryString = string.Format("EXEC USP_GETSTOREANDDETAIL {0}", storeId);
             var data = dbconn.ConnectDB(queryString);
 
-            STORE store = new STORE();
-            List<FOOD_DETAIL> list = new List<FOOD_DETAIL>();
+            FOOD_STORE_LOCAL store = new FOOD_STORE_LOCAL();
+            List<FOOD_DETAIL_LOCAL> list = new List<FOOD_DETAIL_LOCAL>();
 
             DateTime dt = DateTime.Now;
             while (data.Read())
@@ -138,7 +138,7 @@ namespace FoodAppDotNet.Models
                 store.ISUSE = data["ISUSE"] == "Y" ? true : false;
                 store.FoodDetailList = GetFoodDetail(storeId);
 
-                list.Add(new FOOD_DETAIL
+                list.Add(new FOOD_DETAIL_LOCAL
                 {
                     IDX = (int)data["IDX"],
                     STORE_IDX = (int)data["STORE_IDX"],

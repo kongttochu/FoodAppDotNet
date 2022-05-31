@@ -9,17 +9,7 @@ namespace FoodAppDotNet.Models
     {
     }
 
-    public class COUNTRY
-    {
-        public int IDX { get; set; }
-        public string COUNTRY2 { get; set; }
-        public string CODE { get; set; }
-        public DateTime REGDATE { get; set; }
-        public bool ISUSE { get; set; }
-
-    }
-
-    public class FOOD_COUNTRY
+    public class FOOD_COUNTRY_LOCAL
     {
         public int IDX { get; set; }
         public string COUNTRY_KOR_NAME { get; set; }
@@ -30,7 +20,7 @@ namespace FoodAppDotNet.Models
         public bool ISUSE { get; set; }
     }
 
-    public class STORE
+    public class FOOD_STORE_LOCAL
     {
         public int IDX { get; set; }
         public int COUNTRY_IDX { get; set; }
@@ -45,10 +35,10 @@ namespace FoodAppDotNet.Models
         public string UPDID { get; set; }
         public bool ISUSE { get; set; }
 
-        public List<FOOD_DETAIL> FoodDetailList { get; set; }
+        public List<FOOD_DETAIL_LOCAL> FoodDetailList { get; set; }
     }
 
-    public class FOOD_DETAIL
+    public class FOOD_DETAIL_LOCAL
     {
         public int IDX { get; set; }
         public int STORE_IDX { get; set; }
