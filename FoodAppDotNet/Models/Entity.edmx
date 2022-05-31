@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FOODSTOREAPPTESTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="COUNTRY">
+          <Key>
+            <PropertyRef Name="IDX" />
+          </Key>
+          <Property Name="IDX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COUNTRY_KOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGDATE" Type="date" />
+          <Property Name="REGID" Type="nvarchar" MaxLength="50" />
+          <Property Name="UPDDATE" Type="date" />
+          <Property Name="UPDID" Type="nvarchar" MaxLength="50" />
+          <Property Name="ISUSE" Type="nvarchar" MaxLength="1" />
+          <Property Name="ETC" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FOOD_DETAIL">
+          <Key>
+            <PropertyRef Name="IDX" />
+          </Key>
+          <Property Name="IDX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STORE_IDX" Type="int" Nullable="false" />
+          <Property Name="FOOD_KOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="FOOD_PRICE" Type="int" />
+          <Property Name="REGDATE" Type="date" />
+          <Property Name="REGID" Type="nvarchar" MaxLength="50" />
+          <Property Name="UPDDATE" Type="date" />
+          <Property Name="UPDID" Type="nvarchar" MaxLength="50" />
+          <Property Name="ISUSE" Type="nvarchar" MaxLength="1" />
+          <Property Name="ETC" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="STORE">
+          <Key>
+            <PropertyRef Name="IDX" />
+          </Key>
+          <Property Name="IDX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COUNTRY_IDX" Type="int" Nullable="false" />
+          <Property Name="STORE_KOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="STORE_DELIVERY_TIP" Type="nvarchar" MaxLength="10" />
+          <Property Name="STORE_DELIVERY_MIN_TIME" Type="nvarchar" MaxLength="10" />
+          <Property Name="STORE_DELIVERY_MAX_TIME" Type="nvarchar" MaxLength="10" />
+          <Property Name="STORE_RATING" Type="int" />
+          <Property Name="REGDATE" Type="date" />
+          <Property Name="REGID" Type="nvarchar" MaxLength="50" />
+          <Property Name="UPDDATE" Type="date" />
+          <Property Name="UPDID" Type="nvarchar" MaxLength="50" />
+          <Property Name="ISUSE" Type="nvarchar" MaxLength="1" />
+          <Property Name="ETC" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_FOOD_DETAIL_STORE">
+          <End Role="STORE" Type="Self.STORE" Multiplicity="1" />
+          <End Role="FOOD_DETAIL" Type="Self.FOOD_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STORE">
+              <PropertyRef Name="IDX" />
+            </Principal>
+            <Dependent Role="FOOD_DETAIL">
+              <PropertyRef Name="STORE_IDX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STORE_COUNTRY">
+          <End Role="COUNTRY" Type="Self.COUNTRY" Multiplicity="1" />
+          <End Role="STORE" Type="Self.STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COUNTRY">
+              <PropertyRef Name="IDX" />
+            </Principal>
+            <Dependent Role="STORE">
+              <PropertyRef Name="COUNTRY_IDX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="USP_GETCOUNTRYAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="USP_GETFOODDETAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="STORE_IDX" Type="int" Mode="In" />
+        </Function>
+        <Function Name="USP_GETFOODDETAIL_WHERE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="STORE_NAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="USP_GETSTORE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="COUNTRY_IDX" Type="int" Mode="In" />
+          <Parameter Name="STORE_IDX" Type="int" Mode="In" />
+        </Function>
+        <Function Name="USP_GETSTOREANDDETAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="STORE_IDX" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="FOODSTOREAPPTESTModelStoreContainer">
+          <EntitySet Name="COUNTRY" EntityType="Self.COUNTRY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FOOD_DETAIL" EntityType="Self.FOOD_DETAIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STORE" EntityType="Self.STORE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FOOD_DETAIL_STORE" Association="Self.FK_FOOD_DETAIL_STORE">
+            <End Role="STORE" EntitySet="STORE" />
+            <End Role="FOOD_DETAIL" EntitySet="FOOD_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STORE_COUNTRY" Association="Self.FK_STORE_COUNTRY">
+            <End Role="COUNTRY" EntitySet="COUNTRY" />
+            <End Role="STORE" EntitySet="STORE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FOODSTOREAPPTESTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="COUNTRY">
+          <Key>
+            <PropertyRef Name="IDX" />
+          </Key>
+          <Property Name="IDX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="COUNTRY_KOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGDATE" Type="DateTime" Precision="0" />
+          <Property Name="REGID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPDDATE" Type="DateTime" Precision="0" />
+          <Property Name="UPDID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ISUSE" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ETC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="STORE" Relationship="Self.FK_STORE_COUNTRY" FromRole="COUNTRY" ToRole="STORE" />
+        </EntityType>
+        <EntityType Name="FOOD_DETAIL">
+          <Key>
+            <PropertyRef Name="IDX" />
+          </Key>
+          <Property Name="IDX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STORE_IDX" Type="Int32" Nullable="false" />
+          <Property Name="FOOD_KOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FOOD_PRICE" Type="Int32" />
+          <Property Name="REGDATE" Type="DateTime" Precision="0" />
+          <Property Name="REGID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPDDATE" Type="DateTime" Precision="0" />
+          <Property Name="UPDID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ISUSE" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ETC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="STORE" Relationship="Self.FK_FOOD_DETAIL_STORE" FromRole="FOOD_DETAIL" ToRole="STORE" />
+        </EntityType>
+        <EntityType Name="STORE">
+          <Key>
+            <PropertyRef Name="IDX" />
+          </Key>
+          <Property Name="IDX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="COUNTRY_IDX" Type="Int32" Nullable="false" />
+          <Property Name="STORE_KOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="STORE_DELIVERY_TIP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="STORE_DELIVERY_MIN_TIME" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="STORE_DELIVERY_MAX_TIME" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="STORE_RATING" Type="Int32" />
+          <Property Name="REGDATE" Type="DateTime" Precision="0" />
+          <Property Name="REGID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPDDATE" Type="DateTime" Precision="0" />
+          <Property Name="UPDID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ISUSE" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ETC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="COUNTRY" Relationship="Self.FK_STORE_COUNTRY" FromRole="STORE" ToRole="COUNTRY" />
+          <NavigationProperty Name="FOOD_DETAIL" Relationship="Self.FK_FOOD_DETAIL_STORE" FromRole="STORE" ToRole="FOOD_DETAIL" />
+        </EntityType>
+        <Association Name="FK_STORE_COUNTRY">
+          <End Role="COUNTRY" Type="Self.COUNTRY" Multiplicity="1" />
+          <End Role="STORE" Type="Self.STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COUNTRY">
+              <PropertyRef Name="IDX" />
+            </Principal>
+            <Dependent Role="STORE">
+              <PropertyRef Name="COUNTRY_IDX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FOOD_DETAIL_STORE">
+          <End Role="STORE" Type="Self.STORE" Multiplicity="1" />
+          <End Role="FOOD_DETAIL" Type="Self.FOOD_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STORE">
+              <PropertyRef Name="IDX" />
+            </Principal>
+            <Dependent Role="FOOD_DETAIL">
+              <PropertyRef Name="STORE_IDX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FOODSTOREAPPTESTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="COUNTRY" EntityType="Self.COUNTRY" />
+          <EntitySet Name="FOOD_DETAIL" EntityType="Self.FOOD_DETAIL" />
+          <EntitySet Name="STORE" EntityType="Self.STORE" />
+          <AssociationSet Name="FK_STORE_COUNTRY" Association="Self.FK_STORE_COUNTRY">
+            <End Role="COUNTRY" EntitySet="COUNTRY" />
+            <End Role="STORE" EntitySet="STORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FOOD_DETAIL_STORE" Association="Self.FK_FOOD_DETAIL_STORE">
+            <End Role="STORE" EntitySet="STORE" />
+            <End Role="FOOD_DETAIL" EntitySet="FOOD_DETAIL" />
+          </AssociationSet>
+          <FunctionImport Name="USP_GETCOUNTRYAll" ReturnType="Collection(FOODSTOREAPPTESTModel.USP_GETCOUNTRYAll_Result)" />
+          <FunctionImport Name="USP_GETFOODDETAIL" ReturnType="Collection(FOODSTOREAPPTESTModel.USP_GETFOODDETAIL_Result)">
+            <Parameter Name="STORE_IDX" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="USP_GETFOODDETAIL_WHERE" ReturnType="Collection(FOODSTOREAPPTESTModel.USP_GETFOODDETAIL_WHERE_Result)">
+            <Parameter Name="STORE_NAME" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="USP_GETSTORE" ReturnType="Collection(FOODSTOREAPPTESTModel.USP_GETSTORE_Result)">
+            <Parameter Name="COUNTRY_IDX" Mode="In" Type="Int32" />
+            <Parameter Name="STORE_IDX" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="USP_GETSTOREANDDETAIL" ReturnType="Collection(FOODSTOREAPPTESTModel.USP_GETSTOREANDDETAIL_Result)">
+            <Parameter Name="STORE_IDX" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="USP_GETCOUNTRYAll_Result">
+          <Property Type="Int32" Name="IDX" Nullable="false" />
+          <Property Type="String" Name="COUNTRY_KOR_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="REGDATE" Nullable="true" />
+          <Property Type="String" Name="REGID" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UPDDATE" Nullable="true" />
+          <Property Type="String" Name="UPDID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ISUSE" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ETC" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="USP_GETFOODDETAIL_Result">
+          <Property Type="Int32" Name="IDX" Nullable="false" />
+          <Property Type="Int32" Name="STORE_IDX" Nullable="false" />
+          <Property Type="String" Name="FOOD_KOR_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="FOOD_PRICE" Nullable="true" />
+          <Property Type="DateTime" Name="REGDATE" Nullable="true" />
+          <Property Type="String" Name="REGID" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UPDDATE" Nullable="true" />
+          <Property Type="String" Name="UPDID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ISUSE" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ETC" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="USP_GETFOODDETAIL_WHERE_Result">
+          <Property Type="String" Name="STORE_KOR_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IDX" Nullable="false" />
+          <Property Type="Int32" Name="IDX1" Nullable="false" />
+          <Property Type="String" Name="COUNTRY_KOR_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="REGDATE" Nullable="true" />
+          <Property Type="String" Name="REGID" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UPDDATE" Nullable="true" />
+          <Property Type="String" Name="UPDID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ISUSE" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ETC" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IDX2" Nullable="false" />
+          <Property Type="Int32" Name="COUNTRY_IDX" Nullable="false" />
+          <Property Type="String" Name="STORE_KOR_NAME1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="STORE_DELIVERY_TIP" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="STORE_DELIVERY_MIN_TIME" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="STORE_DELIVERY_MAX_TIME" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="STORE_RATING" Nullable="true" />
+          <Property Type="DateTime" Name="REGDATE1" Nullable="true" />
+          <Property Type="String" Name="REGID1" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UPDDATE1" Nullable="true" />
+          <Property Type="String" Name="UPDID1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ISUSE1" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ETC1" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="USP_GETSTORE_Result">
+          <Property Type="Int32" Name="IDX" Nullable="false" />
+          <Property Type="Int32" Name="COUNTRY_IDX" Nullable="false" />
+          <Property Type="String" Name="STORE_KOR_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="STORE_DELIVERY_TIP" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="STORE_DELIVERY_MIN_TIME" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="STORE_DELIVERY_MAX_TIME" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="STORE_RATING" Nullable="true" />
+          <Property Type="DateTime" Name="REGDATE" Nullable="true" />
+          <Property Type="String" Name="REGID" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UPDDATE" Nullable="true" />
+          <Property Type="String" Name="UPDID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ISUSE" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ETC" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="USP_GETSTOREANDDETAIL_Result">
+          <Property Type="Int32" Name="IDX" Nullable="false" />
+          <Property Type="Int32" Name="COUNTRY_IDX" Nullable="false" />
+          <Property Type="String" Name="STORE_KOR_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="STORE_DELIVERY_TIP" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="STORE_DELIVERY_MIN_TIME" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="STORE_DELIVERY_MAX_TIME" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="STORE_RATING" Nullable="true" />
+          <Property Type="DateTime" Name="REGDATE" Nullable="true" />
+          <Property Type="String" Name="REGID" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UPDDATE" Nullable="true" />
+          <Property Type="String" Name="UPDID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ISUSE" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ETC" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IDX1" Nullable="false" />
+          <Property Type="Int32" Name="STORE_IDX" Nullable="false" />
+          <Property Type="String" Name="FOOD_KOR_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="FOOD_PRICE" Nullable="true" />
+          <Property Type="DateTime" Name="REGDATE1" Nullable="true" />
+          <Property Type="String" Name="REGID1" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UPDDATE1" Nullable="true" />
+          <Property Type="String" Name="UPDID1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ISUSE1" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ETC1" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FOODSTOREAPPTESTModelStoreContainer" CdmEntityContainer="FOODSTOREAPPTESTEntities">
+          <EntitySetMapping Name="COUNTRY">
+            <EntityTypeMapping TypeName="FOODSTOREAPPTESTModel.COUNTRY">
+              <MappingFragment StoreEntitySet="COUNTRY">
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="COUNTRY_KOR_NAME" ColumnName="COUNTRY_KOR_NAME" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FOOD_DETAIL">
+            <EntityTypeMapping TypeName="FOODSTOREAPPTESTModel.FOOD_DETAIL">
+              <MappingFragment StoreEntitySet="FOOD_DETAIL">
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="STORE_IDX" ColumnName="STORE_IDX" />
+                <ScalarProperty Name="FOOD_KOR_NAME" ColumnName="FOOD_KOR_NAME" />
+                <ScalarProperty Name="FOOD_PRICE" ColumnName="FOOD_PRICE" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STORE">
+            <EntityTypeMapping TypeName="FOODSTOREAPPTESTModel.STORE">
+              <MappingFragment StoreEntitySet="STORE">
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="COUNTRY_IDX" ColumnName="COUNTRY_IDX" />
+                <ScalarProperty Name="STORE_KOR_NAME" ColumnName="STORE_KOR_NAME" />
+                <ScalarProperty Name="STORE_DELIVERY_TIP" ColumnName="STORE_DELIVERY_TIP" />
+                <ScalarProperty Name="STORE_DELIVERY_MIN_TIME" ColumnName="STORE_DELIVERY_MIN_TIME" />
+                <ScalarProperty Name="STORE_DELIVERY_MAX_TIME" ColumnName="STORE_DELIVERY_MAX_TIME" />
+                <ScalarProperty Name="STORE_RATING" ColumnName="STORE_RATING" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="USP_GETCOUNTRYAll" FunctionName="FOODSTOREAPPTESTModel.Store.USP_GETCOUNTRYAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FOODSTOREAPPTESTModel.USP_GETCOUNTRYAll_Result">
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="COUNTRY_KOR_NAME" ColumnName="COUNTRY_KOR_NAME" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="USP_GETFOODDETAIL" FunctionName="FOODSTOREAPPTESTModel.Store.USP_GETFOODDETAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FOODSTOREAPPTESTModel.USP_GETFOODDETAIL_Result">
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="STORE_IDX" ColumnName="STORE_IDX" />
+                <ScalarProperty Name="FOOD_KOR_NAME" ColumnName="FOOD_KOR_NAME" />
+                <ScalarProperty Name="FOOD_PRICE" ColumnName="FOOD_PRICE" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="USP_GETFOODDETAIL_WHERE" FunctionName="FOODSTOREAPPTESTModel.Store.USP_GETFOODDETAIL_WHERE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FOODSTOREAPPTESTModel.USP_GETFOODDETAIL_WHERE_Result">
+                <ScalarProperty Name="STORE_KOR_NAME" ColumnName="STORE_KOR_NAME" />
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="IDX1" ColumnName="IDX1" />
+                <ScalarProperty Name="COUNTRY_KOR_NAME" ColumnName="COUNTRY_KOR_NAME" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+                <ScalarProperty Name="IDX2" ColumnName="IDX2" />
+                <ScalarProperty Name="COUNTRY_IDX" ColumnName="COUNTRY_IDX" />
+                <ScalarProperty Name="STORE_KOR_NAME1" ColumnName="STORE_KOR_NAME1" />
+                <ScalarProperty Name="STORE_DELIVERY_TIP" ColumnName="STORE_DELIVERY_TIP" />
+                <ScalarProperty Name="STORE_DELIVERY_MIN_TIME" ColumnName="STORE_DELIVERY_MIN_TIME" />
+                <ScalarProperty Name="STORE_DELIVERY_MAX_TIME" ColumnName="STORE_DELIVERY_MAX_TIME" />
+                <ScalarProperty Name="STORE_RATING" ColumnName="STORE_RATING" />
+                <ScalarProperty Name="REGDATE1" ColumnName="REGDATE1" />
+                <ScalarProperty Name="REGID1" ColumnName="REGID1" />
+                <ScalarProperty Name="UPDDATE1" ColumnName="UPDDATE1" />
+                <ScalarProperty Name="UPDID1" ColumnName="UPDID1" />
+                <ScalarProperty Name="ISUSE1" ColumnName="ISUSE1" />
+                <ScalarProperty Name="ETC1" ColumnName="ETC1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="USP_GETSTORE" FunctionName="FOODSTOREAPPTESTModel.Store.USP_GETSTORE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FOODSTOREAPPTESTModel.USP_GETSTORE_Result">
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="COUNTRY_IDX" ColumnName="COUNTRY_IDX" />
+                <ScalarProperty Name="STORE_KOR_NAME" ColumnName="STORE_KOR_NAME" />
+                <ScalarProperty Name="STORE_DELIVERY_TIP" ColumnName="STORE_DELIVERY_TIP" />
+                <ScalarProperty Name="STORE_DELIVERY_MIN_TIME" ColumnName="STORE_DELIVERY_MIN_TIME" />
+                <ScalarProperty Name="STORE_DELIVERY_MAX_TIME" ColumnName="STORE_DELIVERY_MAX_TIME" />
+                <ScalarProperty Name="STORE_RATING" ColumnName="STORE_RATING" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="USP_GETSTOREANDDETAIL" FunctionName="FOODSTOREAPPTESTModel.Store.USP_GETSTOREANDDETAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FOODSTOREAPPTESTModel.USP_GETSTOREANDDETAIL_Result">
+                <ScalarProperty Name="IDX" ColumnName="IDX" />
+                <ScalarProperty Name="COUNTRY_IDX" ColumnName="COUNTRY_IDX" />
+                <ScalarProperty Name="STORE_KOR_NAME" ColumnName="STORE_KOR_NAME" />
+                <ScalarProperty Name="STORE_DELIVERY_TIP" ColumnName="STORE_DELIVERY_TIP" />
+                <ScalarProperty Name="STORE_DELIVERY_MIN_TIME" ColumnName="STORE_DELIVERY_MIN_TIME" />
+                <ScalarProperty Name="STORE_DELIVERY_MAX_TIME" ColumnName="STORE_DELIVERY_MAX_TIME" />
+                <ScalarProperty Name="STORE_RATING" ColumnName="STORE_RATING" />
+                <ScalarProperty Name="REGDATE" ColumnName="REGDATE" />
+                <ScalarProperty Name="REGID" ColumnName="REGID" />
+                <ScalarProperty Name="UPDDATE" ColumnName="UPDDATE" />
+                <ScalarProperty Name="UPDID" ColumnName="UPDID" />
+                <ScalarProperty Name="ISUSE" ColumnName="ISUSE" />
+                <ScalarProperty Name="ETC" ColumnName="ETC" />
+                <ScalarProperty Name="IDX1" ColumnName="IDX1" />
+                <ScalarProperty Name="STORE_IDX" ColumnName="STORE_IDX" />
+                <ScalarProperty Name="FOOD_KOR_NAME" ColumnName="FOOD_KOR_NAME" />
+                <ScalarProperty Name="FOOD_PRICE" ColumnName="FOOD_PRICE" />
+                <ScalarProperty Name="REGDATE1" ColumnName="REGDATE1" />
+                <ScalarProperty Name="REGID1" ColumnName="REGID1" />
+                <ScalarProperty Name="UPDDATE1" ColumnName="UPDDATE1" />
+                <ScalarProperty Name="UPDID1" ColumnName="UPDID1" />
+                <ScalarProperty Name="ISUSE1" ColumnName="ISUSE1" />
+                <ScalarProperty Name="ETC1" ColumnName="ETC1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="없음" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
